@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using PhotoViewer.Core; // Для FolderNavigator и ImageItem
-using WinForms = System.Windows.Forms; // Для диалога выбора папки
+using Microsoft.WindowsAPICodePack.Dialogs; // Для CommonOpenFileDialog
 
 namespace PhotoViewer.WPF
 {
@@ -22,23 +22,25 @@ namespace PhotoViewer.WPF
             ImagesListView.ItemsSource = images;
         }
 
-        // Обработчик нажатия кнопки "Открыть" для выбора папки
+        // Обработчик нажатия кнопки "Открыть" для выбора папки с использованием CommonOpenFileDialog
         private void OpenFolder_Click(object sender, RoutedEventArgs e)
         {
-            using (var dialog = new WinForms.FolderBrowserDialog())
+            var dialog = new CommonOpenFileDialog
             {
-                WinForms.DialogResult result = dialog.ShowDialog();
-                if (result == WinForms.DialogResult.OK)
+                IsFolderPicker = true,
+                Title = "Выберите папку с изображениями"
+            };
+
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                FolderPathTextBox.Text = dialog.FileName;
+                try
                 {
-                    FolderPathTextBox.Text = dialog.SelectedPath;
-                    try
-                    {
-                        folderNavigator.ChangeFolder(dialog.SelectedPath);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Ошибка при открытии папки: " + ex.Message);
-                    }
+                    folderNavigator.ChangeFolder(dialog.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка при открытии папки: " + ex.Message);
                 }
             }
         }

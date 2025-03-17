@@ -9,8 +9,8 @@ namespace PhotoViewer.Console
         static void Main(string[] args)
         {
             FolderNavigator navigator = new FolderNavigator();
-            Console.Write("Введите путь к папке с изображениями: ");
-            string path = Console.ReadLine();
+            global::System.Console.Write("Введите путь к папке с изображениями: ");
+            string path = global::System.Console.ReadLine();
 
             try
             {
@@ -18,19 +18,19 @@ namespace PhotoViewer.Console
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Ошибка: " + ex.Message);
+                global::System.Console.WriteLine("Ошибка: " + ex.Message);
                 return;
             }
 
             List<ImageItem> images = navigator.GetImageFiles();
-            Console.WriteLine("Найденные изображения:");
+            global::System.Console.WriteLine("Найденные изображения:");
             foreach (var image in images)
             {
-                Console.WriteLine($"Имя: {image.FileName} | Дата изменения: {image.ModifiedDate} | Путь: {image.FilePath}");
+                global::System.Console.WriteLine($"Имя: {image.FileName} | Дата изменения: {image.ModifiedDate} | Путь: {image.FilePath}");
             }
 
-            Console.WriteLine("Нажмите любую клавишу для выхода...");
-            Console.ReadKey();
+            global::System.Console.WriteLine("Нажмите любую клавишу для выхода...");
+            global::System.Console.ReadKey();
         }
     }
 }

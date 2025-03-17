@@ -30,7 +30,8 @@ namespace PhotoViewer.Core
                     FilePath = file,
                     FileName = Path.GetFileName(file),
                     ModifiedDate = File.GetLastWriteTime(file)
-                }).ToList();
+                })
+                .ToList();
 
             return files;
         }
