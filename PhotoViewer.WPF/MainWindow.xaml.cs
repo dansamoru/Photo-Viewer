@@ -1,23 +1,25 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
-namespace PhotoViewer.WPF;
-
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
-public partial class MainWindow : Window
+namespace PhotoViewer.WPF
 {
-    public MainWindow()
+    public partial class MainWindow : Window
     {
-        InitializeComponent();
+        public MainWindow()
+        {
+            InitializeComponent();
+            // Здесь можно загрузить список изображений, используя логику из PhotoViewer.Core
+        }
+
+        private void ImagesListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            // Получаем выбранный элемент
+            var selectedItem = ImagesListView.SelectedItem as ImageItem; // ImageItem – модель для изображения
+            if (selectedItem != null)
+            {
+                // Создаем новое окно для показа изображения в полном экране
+                FullScreenWindow fullScreenWindow = new FullScreenWindow(selectedItem.FilePath);
+                fullScreenWindow.Show();
+            }
+        }
     }
 }

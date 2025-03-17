@@ -10,6 +10,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoViewer.WPF", "PhotoVie
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoViewer.Console", "PhotoViewer.Console\PhotoViewer.Console.csproj", "{D1A4657E-0510-4E94-B4CD-A917679F0497}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AAA98A65-CB10-43FC-A387-2A6DB44E66F4} = {AAA98A65-CB10-43FC-A387-2A6DB44E66F4}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
