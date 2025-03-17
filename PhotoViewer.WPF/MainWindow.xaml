@@ -1,9 +1,22 @@
 ﻿<Window x:Class="PhotoViewer.WPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:core="clr-namespace:PhotoViewer.Core;assembly=PhotoViewer.Core"
         Title="Фото просмотрщик" Height="600" Width="800">
     <Grid>
-        <ListView Name="ImagesListView" MouseDoubleClick="ImagesListView_MouseDoubleClick">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Панель выбора папки -->
+        <StackPanel Orientation="Horizontal" Margin="10">
+            <TextBox x:Name="FolderPathTextBox" Width="500" />
+            <Button Content="Открыть" Click="OpenFolder_Click" Margin="5,0,0,0"/>
+        </StackPanel>
+
+        <!-- Список изображений -->
+        <ListView x:Name="ImagesListView" Grid.Row="1" MouseDoubleClick="ImagesListView_MouseDoubleClick" Margin="10">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Имя файла" DisplayMemberBinding="{Binding FileName}" Width="200"/>

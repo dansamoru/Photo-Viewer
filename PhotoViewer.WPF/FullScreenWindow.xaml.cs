@@ -1,27 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PhotoViewer.WPF
 {
-    /// <summary>
-    /// Логика взаимодействия для FullScreenWindow.xaml
-    /// </summary>
     public partial class FullScreenWindow : Window
     {
-        public FullScreenWindow()
+        public FullScreenWindow(string imagePath)
         {
             InitializeComponent();
+            try
+            {
+                BitmapImage bitmap = new BitmapImage(new Uri(imagePath));
+                FullScreenImage.Source = bitmap;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при загрузке изображения: " + ex.Message);
+                this.Close();
+            }
         }
     }
 }
