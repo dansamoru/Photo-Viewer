@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using PhotoViewer.Core;
 
 namespace PhotoViewer.Console
@@ -10,13 +11,22 @@ namespace PhotoViewer.Console
             FolderNavigator navigator = new FolderNavigator();
             Console.Write("Введите путь к папке с изображениями: ");
             string path = Console.ReadLine();
-            navigator.ChangeFolder(path);
 
-            var images = navigator.GetImageFiles();
-            Console.WriteLine("Найденные изображения:");
-            foreach (var file in images)
+            try
             {
-                Console.WriteLine(file);
+                navigator.ChangeFolder(path);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ошибка: " + ex.Message);
+                return;
+            }
+
+            List<ImageItem> images = navigator.GetImageFiles();
+            Console.WriteLine("Найденные изображения:");
+            foreach (var image in images)
+            {
+                Console.WriteLine($"Имя: {image.FileName} | Дата изменения: {image.ModifiedDate} | Путь: {image.FilePath}");
             }
 
             Console.WriteLine("Нажмите любую клавишу для выхода...");
