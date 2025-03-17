@@ -1,25 +1,38 @@
-﻿namespace PhotoViewer.Core
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+namespace PhotoViewer.Core
 {
     public class FolderNavigator
     {
-        // Свойство для текущего пути
+        // Текущий путь к папке
         public string CurrentPath { get; set; }
 
         // Делегат и событие для уведомления об изменении папки
         public delegate void FolderChangedEventHandler(string newPath);
         public event FolderChangedEventHandler FolderChanged;
 
-        // Метод для получения списка файлов (например, изображений)
-        public List<string> GetImageFiles()
+        // Метод для получения списка изображений в текущей папке
+        public List<ImageItem> GetImageFiles()
         {
             if (string.IsNullOrEmpty(CurrentPath) || !Directory.Exists(CurrentPath))
-                return new List<string>();
+                return new List<ImageItem>();
 
-            // Фильтрация по расширениям файлов
+            // Поддерживаемые расширения файлов
             var supportedExtensions = new[] { ".jpg", ".jpeg", ".png", ".bmp", ".gif" };
-            return Directory.GetFiles(CurrentPath)
-                            .Where(file => supportedExtensions.Contains(Path.GetExtension(file).ToLower()))
-                            .ToList();
+
+            var files = Directory.GetFiles(CurrentPath)
+                .Where(file => supportedExtensions.Contains(Path.GetExtension(file).ToLower()))
+                .Select(file => new ImageItem
+                {
+                    FilePath = file,
+                    FileName = Path.GetFileName(file),
+                    ModifiedDate = File.GetLastWriteTime(file)
+                }).ToList();
+
+            return files;
         }
 
         // Метод для смены папки
@@ -29,6 +42,10 @@
             {
                 CurrentPath = newPath;
                 FolderChanged?.Invoke(newPath);
+            }
+            else
+            {
+                throw new DirectoryNotFoundException($"Папка '{newPath}' не найдена.");
             }
         }
     }
