@@ -4,7 +4,8 @@
         Title="Полноэкранный просмотр" 
         WindowStyle="None" 
         WindowState="Maximized" 
-        Background="Black">
+        Background="Black"
+        KeyDown="Window_KeyDown">
     <Grid>
         <Image x:Name="FullScreenImage" Stretch="Uniform"/>
     </Grid>

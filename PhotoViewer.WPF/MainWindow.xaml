@@ -15,14 +15,29 @@
             <Button Content="Открыть" Click="OpenFolder_Click" Margin="5,0,0,0"/>
         </StackPanel>
 
-        <!-- Список изображений -->
-        <ListView x:Name="ImagesListView" Grid.Row="1" MouseDoubleClick="ImagesListView_MouseDoubleClick" Margin="10">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Имя файла" DisplayMemberBinding="{Binding FileName}" Width="200"/>
-                    <GridViewColumn Header="Дата изменения" DisplayMemberBinding="{Binding ModifiedDate}" Width="150"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <!-- Основная область с двумя колонками: список и предпросмотр -->
+        <Grid Grid.Row="1" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Список изображений -->
+            <ListView x:Name="ImagesListView" 
+                      SelectionChanged="ImagesListView_SelectionChanged"
+                      MouseDoubleClick="ImagesListView_MouseDoubleClick">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Имя файла" DisplayMemberBinding="{Binding FileName}" Width="200"/>
+                        <GridViewColumn Header="Дата изменения" DisplayMemberBinding="{Binding ModifiedDate}" Width="150"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <!-- Предпросмотр изображения -->
+            <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" Margin="10">
+                <Image x:Name="PreviewImage" Stretch="Uniform"/>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

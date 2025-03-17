@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using PhotoViewer.Core; // Для FolderNavigator и ImageItem
 using Microsoft.WindowsAPICodePack.Dialogs; // Для CommonOpenFileDialog
 
@@ -20,6 +21,8 @@ namespace PhotoViewer.WPF
         {
             var images = folderNavigator.GetImageFiles();
             ImagesListView.ItemsSource = images;
+            // Очистить предпросмотр
+            PreviewImage.Source = null;
         }
 
         // Обработчик нажатия кнопки "Открыть" для выбора папки с использованием CommonOpenFileDialog
@@ -42,6 +45,32 @@ namespace PhotoViewer.WPF
                 {
                     MessageBox.Show("Ошибка при открытии папки: " + ex.Message);
                 }
+            }
+        }
+
+        // Обработчик одиночного нажатия (SelectionChanged) для предпросмотра изображения
+        private void ImagesListView_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (ImagesListView.SelectedItem is ImageItem selectedItem)
+            {
+                try
+                {
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(selectedItem.FilePath);
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.EndInit();
+                    PreviewImage.Source = bitmap;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка при загрузке предпросмотра: " + ex.Message);
+                    PreviewImage.Source = null;
+                }
+            }
+            else
+            {
+                PreviewImage.Source = null;
             }
         }
 
