@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using PhotoViewer.Core; // Для FolderNavigator и ImageItem
-using Microsoft.WindowsAPICodePack.Dialogs; // Для CommonOpenFileDialog
+using PhotoViewer.Core;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace PhotoViewer.WPF
 {
@@ -16,16 +19,13 @@ namespace PhotoViewer.WPF
             folderNavigator.FolderChanged += FolderNavigator_FolderChanged;
         }
 
-        // Обработчик события смены папки – обновление списка изображений
         private void FolderNavigator_FolderChanged(string newPath)
         {
             var images = folderNavigator.GetImageFiles();
             ImagesListView.ItemsSource = images;
-            // Очистить предпросмотр
             PreviewImage.Source = null;
         }
 
-        // Обработчик нажатия кнопки "Открыть" для выбора папки с использованием CommonOpenFileDialog
         private void OpenFolder_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new CommonOpenFileDialog
@@ -48,8 +48,7 @@ namespace PhotoViewer.WPF
             }
         }
 
-        // Обработчик одиночного нажатия (SelectionChanged) для предпросмотра изображения
-        private void ImagesListView_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void ImagesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ImagesListView.SelectedItem is ImageItem selectedItem)
             {
@@ -74,12 +73,13 @@ namespace PhotoViewer.WPF
             }
         }
 
-        // Обработчик двойного клика по элементу ListView – открытие изображения в полноэкранном режиме
-        private void ImagesListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void ImagesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (ImagesListView.SelectedItem is ImageItem selectedItem)
             {
-                FullScreenWindow fullScreenWindow = new FullScreenWindow(selectedItem.FilePath);
+                var images = ImagesListView.ItemsSource as List<ImageItem>;
+                int currentIndex = images.IndexOf(selectedItem);
+                FullScreenWindow fullScreenWindow = new FullScreenWindow(images, currentIndex);
                 fullScreenWindow.Show();
             }
         }

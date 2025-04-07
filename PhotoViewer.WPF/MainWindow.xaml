@@ -1,43 +1,31 @@
 ﻿<Window x:Class="PhotoViewer.WPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:core="clr-namespace:PhotoViewer.Core;assembly=PhotoViewer.Core"
-        Title="Фото просмотрщик" Height="600" Width="800">
-    <Grid>
+        Title="Photo Viewer" Height="600" Width="800">
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
-        <!-- Панель выбора папки -->
-        <StackPanel Orientation="Horizontal" Margin="10">
-            <TextBox x:Name="FolderPathTextBox" Width="500" />
-            <Button Content="Открыть" Click="OpenFolder_Click" Margin="5,0,0,0"/>
+        <!-- Выбор папки -->
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
+            <TextBox x:Name="FolderPathTextBox" Width="500" Margin="0,0,10,0"/>
+            <Button Content="Открыть" Click="OpenFolder_Click" Width="100"/>
         </StackPanel>
-
-        <!-- Основная область с двумя колонками: список и предпросмотр -->
-        <Grid Grid.Row="1" Margin="10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="3*"/>
-            </Grid.ColumnDefinitions>
-
-            <!-- Список изображений -->
-            <ListView x:Name="ImagesListView" 
-                      SelectionChanged="ImagesListView_SelectionChanged"
-                      MouseDoubleClick="ImagesListView_MouseDoubleClick">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Имя файла" DisplayMemberBinding="{Binding FileName}" Width="200"/>
-                        <GridViewColumn Header="Дата изменения" DisplayMemberBinding="{Binding ModifiedDate}" Width="150"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-
-            <!-- Предпросмотр изображения -->
-            <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" Margin="10">
-                <Image x:Name="PreviewImage" Stretch="Uniform"/>
-            </Border>
-        </Grid>
+        <!-- Список изображений с автоматической прокруткой -->
+        <ListView x:Name="ImagesListView" Grid.Row="1" 
+                  SelectionChanged="ImagesListView_SelectionChanged" 
+                  MouseDoubleClick="ImagesListView_MouseDoubleClick">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Имя файла" DisplayMemberBinding="{Binding FileName}" Width="250"/>
+                    <GridViewColumn Header="Размер" DisplayMemberBinding="{Binding DisplayFileSize}" Width="100"/>
+                    <GridViewColumn Header="Дата изменения" DisplayMemberBinding="{Binding ModifiedDate}" Width="150"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <!-- Превью изображения с корректным масштабированием -->
+        <Image x:Name="PreviewImage" Grid.Row="2" Height="200" Margin="0,10,0,0" Stretch="Uniform"/>
     </Grid>
 </Window>
